@@ -6,7 +6,7 @@ QUnit.module("module", function (obj) {
     obj.afterEach(function () {
         canvas = undefined
     });
-    /*
+
     QUnit.test("Can select a rectangle", function (assert) {
         var done = assert.async();
         selectImages({
@@ -26,15 +26,14 @@ QUnit.module("module", function (obj) {
             done()
         })
     })
-    //*/
 
     QUnit.test("Can select a complex shape", function (assert) {
         var done = assert.async();
         selectImages({
             fileUrl: './test2.png',
             canvas: canvas,
-            startX: 0,
-            startY: 0
+            startX: 16,
+            startY: 15
         }, function (selections) {
             assert.deepEqual(selections,[
                 {
@@ -49,6 +48,74 @@ QUnit.module("module", function (obj) {
             done()
         })
     })
+
+    QUnit.test('Find pixel in selections', function(assert){
+        var done = assert.async();
+
+        loadFileInCanvas('./test3.png', canvas, function (imageObj, context) {
+            let selections = [
+                {
+                    "x": 4,
+                    "y": 5,
+                    "width": 40,
+                    "height": 56
+                },
+                {
+                    "x": 53,
+                    "y": 5,
+                    "width": 16,
+                    "height": 16
+                }
+
+            ]
+
+            let found = isPixelInSelections(selections, {x: 19, y: 31})
+            let found2 = isPixelInSelections(selections, {x: 61, y: 13})
+            let notFound = isPixelInSelections(selections, {x: 1, y: 1})
+            let notFound2 = isPixelInSelections(selections, {x: 57, y: 39})
+
+            assert.equal(found, true)
+            assert.equal(found2, true)
+            assert.equal(notFound, false)
+            assert.equal(notFound2, false)
+
+            done()
+        })
+
+    })
+
+
+
+    //*
+    QUnit.test("Two images in a row", function (assert) {
+        var done = assert.async();
+        selectImages({
+            fileUrl: './test3.png',
+            canvas: canvas,
+            startX: 0,
+            startY: 0
+        }, function (selections) {
+            assert.deepEqual(selections,[
+                {
+                    "x": 4,
+                    "y": 5,
+                    "width": 40,
+                    "height": 56
+                },
+                {
+                    "x": 53,
+                    "y": 5,
+                    "width": 16,
+                    "height": 16
+                }
+
+            ])
+            done()
+        })
+    })
+    //*/
+
+
 
 });
 
