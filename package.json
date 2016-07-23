@@ -1,0 +1,21 @@
+{
+  "name": "map-scrap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron index.js",
+    "test": "electron test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron-prebuilt": "^1.1.0"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.0",
+    "chai": "^3.5.0",
+    "electron-canvas-to-buffer": "^2.0.0",
+    "mocha": "^2.5.3"
+  }
+}
