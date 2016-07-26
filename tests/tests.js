@@ -7,6 +7,7 @@ QUnit.module("module", function (obj) {
         canvas = undefined
     });
 
+    //*
     QUnit.test("Can select a rectangle", function (assert) {
         var done = assert.async();
         selectImages({
@@ -83,7 +84,7 @@ QUnit.module("module", function (obj) {
         })
 
     })
-
+//*/
 
 
     //*
@@ -114,6 +115,39 @@ QUnit.module("module", function (obj) {
         })
     })
     //*/
+
+    QUnit.test("Images im multiple position", function (assert) {
+        var done = assert.async();
+        selectImages({
+            fileUrl: './test4.png',
+            canvas: canvas,
+            startX: 0,
+            startY: 0
+        }, function (selections) {
+            assert.deepEqual(selections,[
+                {
+                    "x": 4,
+                    "y": 4,
+                    "width": 40,
+                    "height": 56
+                },
+                {
+                    "x": 75,
+                    "y": 4,
+                    "width": 16,
+                    "height": 16
+                },
+                {
+                    "x": 54,
+                    "y": 24,
+                    "width": 13,
+                    "height": 16
+                }
+
+            ])
+            done()
+        })
+    })
 
 
 

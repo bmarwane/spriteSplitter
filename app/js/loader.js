@@ -5,9 +5,9 @@ function selectImages(conf, onSelectionsFound){
     loadFileInCanvas(fileUrl, canvas, function (imageObj, context) {
         var w = imageObj.width, h = imageObj.height;
         imageData = context.getImageData(0, 0, w, h).data
-        refPixel = getPixel(conf.startX, conf.start)
+        refPixel = getPixel(conf.startX, conf.startY)
         if(onSelectionsFound){
-            onSelectionsFound(findImageFrom(0, 0))
+            onSelectionsFound(findFramesFrom(0, 0))
         }
     })
 
@@ -70,6 +70,7 @@ function debugSelection(selection){
 }
 
 function isPixelInSelections(selections, pixel){
+    /*
     let maxWidth = imageObj.width
     let maxHeight = imageObj.height
 
@@ -88,11 +89,78 @@ function isPixelInSelections(selections, pixel){
     }
 
     return false
+    //*/
+
+    return selections.filter(function(selection){
+        let minX = selection.x
+        let minY = selection.y
+
+        let maxX = selection.x + selection.width
+        let maxY = selection.y + selection.height
+
+        if(    pixel.x >= minX && pixel.x <= maxX
+            && pixel.y >= minY && pixel.y <= maxY  ){
+            return true
+        } else {
+            return false
+        }
+    }).length > 0
 }
 
 
-function findImageFrom(startX, startY){
-    let firstPixel = scanLinesFrom(startX, startY)
+function findFramesFrom(startX, startY){
+    let selections = []
+
+    //selections.push(selectFrame(startX, startY))
+
+    selectFrameAndNext(startX, startY, selections)
+
+    return selections
+}
+
+function selectFrameAndNext(startX, startY, selections){
+
+
+    let firstPixel = findNextStartPixel(startX, startY, selections)
+
+    if(isFinalPixel(firstPixel)){
+        return;
+    }
+
+    let selection = selectFrame(firstPixel)
+    if(selection){
+        selections.push(selection)
+
+        debugSelection(selection)
+
+        let nextPixel = findNextPixel()
+
+        selectFrameAndNext(nextPixel.x, nextPixel.y, selections)
+
+        function findNextPixel(){
+            let nextStartX = selection.x + selection.width
+            let nextStartY = selection.y
+
+            let retPixel = {
+                x: nextStartX,
+                y: nextStartY
+            }
+
+            if(nextStartX >= selection.width){
+                retPixel.x = 0
+                retPixel.y = selection.y + 1
+            }
+
+            return retPixel
+        }
+    }
+}
+
+function isFinalPixel(pixel){
+    return pixel === undefined || (pixel.x === imageObj.width -1 && pixel.y === imageObj.height -1)
+}
+
+function selectFrame(firstPixel){
 
     let selection = {
         x: firstPixel.x,
@@ -103,16 +171,36 @@ function findImageFrom(startX, startY){
 
     expandFromPixel(selection)
 
-    return [selection]
+    return selection
 }
 
-function scanLinesFrom(beginX, beginY){
-    for(let y = beginY, max = imageObj.height; y < imageObj.height; y++){
-        let pixel = findFirstContentInLine(y, beginX)
+var lastPixel
+function findNextStartPixel(beginX, beginY, selections){
+    return searchPixel(beginX, beginY)
 
-        if(pixel){
-            return pixel
+    function searchPixel(tx, ty){
+        for(let y = ty, max = imageObj.height; y < max; y++){
+            for(let x = tx, maxX = imageObj.width; x < maxX; x++){
+                let targetPixel = getPixel(x, y)
+                if(!isEmptyPixel(targetPixel) && !isPixelInSelections(selections, targetPixel)){
+                    lastPixel = targetPixel
+                    return targetPixel
+                }
+            }
         }
+    }
+
+
+
+}
+
+function firstFirstContentInLineFromZero(y, selections){
+    for(let x = 0, maxX = imageObj.width; x < maxX; x++){
+        let targetPixel = getPixel(x, y)
+        if(!isEmptyPixel(targetPixel) && !isPixelInSelections(selections, targetPixel)){
+            return targetPixel
+        }
+
     }
 }
 
