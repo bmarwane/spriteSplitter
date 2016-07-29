@@ -1,18 +1,58 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Photon</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="vendor/photon-0.1.2-alpha/dist/css/photon.min.css">
     <link rel="stylesheet" href="app/styles/styles.css">
 
 
+    <!-- Javascript -->
 </head>
-
 <body ng-app="app" ng-controller="mainController">
+<div class="window">
 
-<canvas id="canvas" />
+    <!-- .toolbar-header sits at the top of your app -->
+    <header class="toolbar toolbar-header">
+        <div class="toolbar-actions">
+            <div class="btn-group">
+                <button class="btn btn-default">
+                    <span class="icon icon-floppy"></span>
+                </button>
+
+                <button class="btn btn-default" file-trigger>
+                    <span class="icon icon-folder"></span>
+                </button>
+
+                <input ng-model="mainImagePath"
+                       style="display:none"
+                       file-input
+                       type="file"
+                       file-change-callback="onSelectMainImage"/>
+                <button class="btn btn-default">
+                    <span class="icon icon-back"></span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Your app's content goes inside .window-content -->
+    <div class="window-content">
+        <div class="pane-group">
+
+            <div class="pane">
+                <canvas id="canvas"  source-sprite ng-model="mainImagePath"/>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
+
+<script src="vendor/angular.js"></script>
 <script src="app/js/loader.js"></script>
 <script src="app/js/app.js"></script>
 </body>

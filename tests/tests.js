@@ -10,7 +10,7 @@ QUnit.module("module", function (obj) {
     //*
     QUnit.test("Can select a rectangle", function (assert) {
         var done = assert.async();
-        selectImages({
+        spriteSplitter.selectImages({
             fileUrl: './test1.png',
             canvas: canvas,
             startX: 27,
@@ -30,7 +30,7 @@ QUnit.module("module", function (obj) {
 
     QUnit.test("Can select a complex shape", function (assert) {
         var done = assert.async();
-        selectImages({
+        spriteSplitter.selectImages({
             fileUrl: './test2.png',
             canvas: canvas,
             startX: 16,
@@ -53,7 +53,7 @@ QUnit.module("module", function (obj) {
     QUnit.test('Find pixel in selections', function(assert){
         var done = assert.async();
 
-        loadFileInCanvas('./test3.png', canvas, function (imageObj, context) {
+        spriteSplitter.loadFileInCanvas('./test3.png', canvas, function (imageObj, context) {
             let selections = [
                 {
                     "x": 4,
@@ -70,10 +70,10 @@ QUnit.module("module", function (obj) {
 
             ]
 
-            let found = isPixelInSelections(selections, {x: 19, y: 31})
-            let found2 = isPixelInSelections(selections, {x: 61, y: 13})
-            let notFound = isPixelInSelections(selections, {x: 1, y: 1})
-            let notFound2 = isPixelInSelections(selections, {x: 57, y: 39})
+            let found = spriteSplitter.isPixelInSelections(selections, {x: 19, y: 31})
+            let found2 = spriteSplitter.isPixelInSelections(selections, {x: 61, y: 13})
+            let notFound = spriteSplitter.isPixelInSelections(selections, {x: 1, y: 1})
+            let notFound2 = spriteSplitter.isPixelInSelections(selections, {x: 57, y: 39})
 
             assert.equal(found, true)
             assert.equal(found2, true)
@@ -90,7 +90,7 @@ QUnit.module("module", function (obj) {
     //*
     QUnit.test("Two images in a row", function (assert) {
         var done = assert.async();
-        selectImages({
+        spriteSplitter.selectImages({
             fileUrl: './test3.png',
             canvas: canvas,
             startX: 0,
@@ -118,7 +118,7 @@ QUnit.module("module", function (obj) {
 
     QUnit.test("Images im multiple position", function (assert) {
         var done = assert.async();
-        selectImages({
+        spriteSplitter.selectImages({
             fileUrl: './test4.png',
             canvas: canvas,
             startX: 0,

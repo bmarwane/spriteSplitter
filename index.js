@@ -23,7 +23,7 @@ app.on('activate', function () {
 })
 
 function createWindow () {
-    mainWindow = new BrowserWindow({width: 1847, height: 890})
+    mainWindow = new BrowserWindow({width: 970, height: 890})
     mainWindow.setResizable(true)
     mainWindow.loadURL(`file://${__dirname}/index.html`)
 
