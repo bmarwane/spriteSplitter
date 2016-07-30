@@ -70,7 +70,7 @@
             if(spriteSplitter.selectedSelections.indexOf(selection) !== -1) return
             
             spriteSplitter.selectedSelections.push(selection)
-            context.globalCompositeOperation="source-atop"
+            context.globalCompositeOperation="lighter"
             context.fillStyle="#F44336"
             context.fillRect(selection.x, selection.y, selection.width, selection.height)
         }
@@ -147,7 +147,7 @@
             if(selection){
                 selections.push(selection)
 
-                debugSelection(selection)
+                //debugSelection(selection)
 
                 let nextPixel = findNextPixel()
 

@@ -18,9 +18,13 @@ angular.module('app')
         $scope.onFolderSelected = (event,element) => {
             $timeout(function(){
                 $scope.selectedFolder = event.target.files[0].path
-                frameService.saveSelections(spriteSplitter.selectedSelections, $scope.selectedFolder)
+                frameService.saveSelections(spriteSplitter.selectedSelections, $scope.selectedFolder, onFramesSaved)
                 angular.element(element).val(null)
             })
+        }
+
+        function onFramesSaved(){
+            alert('Frames Saved on disc')
         }
     })
 
@@ -52,8 +56,9 @@ angular.module('app')
 
     .factory('frameService', function(){
         return {
-            saveSelections: function(selections, folder){
+            saveSelections: function(selections, folder, onSaveEnd){
                 let index = 0
+                let saved = 0
                 selections.forEach(function(selection){
                     var canvas = document.createElement('canvas')
                     var context = canvas.getContext('2d')
@@ -74,7 +79,12 @@ angular.module('app')
 
                     fs.writeFileAsync(folder + '/' + index + '.png', buffer)
                         .then((response) => {
-
+                            saved ++
+                            if(saved === selections.length){
+                                if(onSaveEnd){
+                                    onSaveEnd()
+                                }
+                            }
                         })
                         .catch((err) => {
                             console.log(err)

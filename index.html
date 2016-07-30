@@ -17,12 +17,13 @@
     <header class="toolbar toolbar-header">
         <div class="toolbar-actions">
             <div class="btn-group">
-                <button class="btn btn-default" file-trigger="saveFrames">
-                    <span class="icon icon-floppy"></span>
-                </button>
 
                 <button class="btn btn-default" file-trigger="spriteLoad">
-                    <span class="icon icon-folder"></span>
+                    <span class="icon icon-picture"></span>
+                </button>
+
+                <button class="btn btn-default" file-trigger="saveFrames" ng-show="mainImagePath">
+                    <span class="icon icon-floppy"></span>
                 </button>
 
                 <input ng-model="mainImagePath"
@@ -37,9 +38,6 @@
                        type="file"
                        webkitdirectory directory
                        file-change-callback="onFolderSelected"/>
-                <button class="btn btn-default">
-                    <span class="icon icon-back"></span>
-                </button>
             </div>
 
         </div>
@@ -50,7 +48,10 @@
         <div class="pane-group">
 
             <div class="pane">
-                <canvas id="canvas"  source-sprite ng-model="mainImagePath"/>
+                <canvas id="canvas"
+                        style="display:block; margin:auto"
+                        source-sprite
+                        ng-model="mainImagePath"/>
 
             </div>
         </div>
