@@ -17,19 +17,26 @@
     <header class="toolbar toolbar-header">
         <div class="toolbar-actions">
             <div class="btn-group">
-                <button class="btn btn-default">
+                <button class="btn btn-default" file-trigger="saveFrames">
                     <span class="icon icon-floppy"></span>
                 </button>
 
-                <button class="btn btn-default" file-trigger>
+                <button class="btn btn-default" file-trigger="spriteLoad">
                     <span class="icon icon-folder"></span>
                 </button>
 
                 <input ng-model="mainImagePath"
                        style="display:none"
-                       file-input
+                       file-input="spriteLoad"
                        type="file"
                        file-change-callback="onSelectMainImage"/>
+
+                <input ng-model="targetFolder"
+                       style="display:none"
+                       file-input="saveFrames"
+                       type="file"
+                       webkitdirectory directory
+                       file-change-callback="onFolderSelected"/>
                 <button class="btn btn-default">
                     <span class="icon icon-back"></span>
                 </button>

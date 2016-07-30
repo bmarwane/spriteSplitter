@@ -1,22 +1,25 @@
-/*
-spriteSplitter.selectImages({
-    fileUrl:'test.gif',
-    canvas:document.getElementById('canvas'),
-    startX:0,
-    startY:0
-}, function(selections){})
-//*/
-
+var canvasBuffer = require('electron-canvas-to-buffer')
+var fs = require('fs')
+var path = require('path')
+require('bluebird').promisifyAll(fs)
 
 angular.module('app', [])
 
 angular.module('app')
-    .controller('mainController', function($scope, $timeout){
+    .controller('mainController', function($scope, $timeout, frameService){
         $scope.mainImagePath = undefined
-        $scope.onSelectMainImage = (event) => {
+        $scope.onSelectMainImage = (event, element) => {
             $timeout(function(){
                 $scope.mainImagePath = event.target.files[0].path
-               // console.log($scope.mainImagePath)
+                angular.element(element).val(null)
+            })
+        }
+
+        $scope.onFolderSelected = (event,element) => {
+            $timeout(function(){
+                $scope.selectedFolder = event.target.files[0].path
+                frameService.saveSelections(spriteSplitter.selectedSelections, $scope.selectedFolder)
+                angular.element(element).val(null)
             })
         }
     })
@@ -47,6 +50,43 @@ angular.module('app')
         }
     })
 
+    .factory('frameService', function(){
+        return {
+            saveSelections: function(selections, folder){
+                let index = 0
+                selections.forEach(function(selection){
+                    var canvas = document.createElement('canvas')
+                    var context = canvas.getContext('2d')
+
+                    canvas.width = selection.width
+                    canvas.height = selection.height
+
+                    console.log(spriteSplitter.imageObj)
+
+                    context.drawImage(spriteSplitter.imageObj, selection.x, selection.y, selection.width, selection.height, 0, 0, selection.width, selection.height)
+
+                    // as a buffer
+                    var buffer = canvasBuffer(canvas, 'image/png')
+
+
+                    // write canvas to file
+                    fs.existsSync(folder) || fs.mkdirSync(folder)
+
+                    fs.writeFileAsync(folder + '/' + index + '.png', buffer)
+                        .then((response) => {
+
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+
+                    index++
+
+                })
+            }
+        }
+    })
+
     .factory('fileInputsManager', function(){
         var fileInputs = []
         return {
@@ -54,9 +94,14 @@ angular.module('app')
                 fileInputs.push(fileInput)
             },
 
-            trigger: function(){
-                console.log(fileInputs)
-                fileInputs[0].click()
+            trigger: function(id){
+                var found = fileInputs.filter(function(inp){
+                    return inp.id === id
+                })
+
+                if(found.length > 0){
+                    found[0].element.click()
+                }
             }
         }
     })
@@ -64,8 +109,11 @@ angular.module('app')
     .directive('fileInput', function(fileInputsManager){
         return {
             restrict: 'A',
-            link: function(scope, element){
-                fileInputsManager.register(element[0])
+            link: function(scope, element, attrs){
+                fileInputsManager.register({
+                    id: attrs.fileInput,
+                    element: element[0]
+                })
             }
         }
     })
@@ -73,9 +121,9 @@ angular.module('app')
     .directive('fileTrigger', function(fileInputsManager){
         return {
             restrict: 'A',
-            link: function(scope, element){
+            link: function(scope, element, attrs){
                 element[0].addEventListener('click', function(){
-                    fileInputsManager.trigger()
+                    fileInputsManager.trigger(attrs.fileTrigger)
                 }, false)
 
             }
@@ -89,7 +137,10 @@ angular.module('app')
             restrict: 'A',
             link: function (scope, element, attrs) {
                 let onChangeHandler = scope.$eval(attrs.fileChangeCallback)
-                element.bind('change', onChangeHandler)
+                element.bind('change', function(event){
+                    onChangeHandler(event, element)
+
+                })
             }
         }
     })

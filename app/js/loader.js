@@ -1,17 +1,33 @@
 (
     function(window){
+        function reset(){
+            imageData = undefined
+            canvas = undefined
+            context = undefined
+            imageObj = undefined
+            refPixel = undefined
+            window.spriteSplitter.selectedSelections = []
+            window.spriteSplitter.imageObj = undefined
+            finalListSelections = []
+        }
+        var imageData, canvas, context, imageObj, refPixel, finalListSelections = []
+
         window.spriteSplitter = {
             selectImages : selectImages,
             isPixelInSelections : isPixelInSelections,
             loadFileInCanvas : loadFileInCanvas,
-            onCanvasClick:onCanvasClick
+            onCanvasClick:onCanvasClick,
+            selectedSelections: [],
+            imageObj: undefined
         }
 
         function selectImages(conf, onSelectionsFound){
+            reset()
             let fileUrl = conf.fileUrl
             let canvas = conf.canvas
             let startX = conf.startX
             loadFileInCanvas(fileUrl, canvas, function (imageObj, context) {
+                spriteSplitter.imageObj = imageObj
                 var w = imageObj.width, h = imageObj.height;
                 imageData = context.getImageData(0, 0, w, h).data
                 refPixel = getPixel(conf.startX, conf.startY)
@@ -22,7 +38,6 @@
 
         }
 
-        var imageData, canvas, context, imageObj, refPixel
 
         function loadFileInCanvas(dataURL, cnv, callback) {
             canvas = cnv;
@@ -52,7 +67,10 @@
         }
 
         function putOverlay(selection){
-            context.globalCompositeOperation="destination-over"
+            if(spriteSplitter.selectedSelections.indexOf(selection) !== -1) return
+            
+            spriteSplitter.selectedSelections.push(selection)
+            context.globalCompositeOperation="source-atop"
             context.fillStyle="#F44336"
             context.fillRect(selection.x, selection.y, selection.width, selection.height)
         }
@@ -61,11 +79,12 @@
 
 
         function isEmptyPixel(targetPixel){
-            return targetPixel.alpha === 0
-            /*
+            //return targetPixel.alpha === 0
+            //*
              return targetPixel.red === refPixel.red
              && targetPixel.blue === refPixel.blue
              && targetPixel.green === refPixel.green
+             &&   targetPixel.alpha === refPixel.alpha
              //*/
         }
 
@@ -103,7 +122,6 @@
         }
 
 
-        var finalListSelections = []
         function findFramesFrom(startX, startY){
             let selections = []
 
@@ -112,6 +130,7 @@
             selectFrameAndNext(startX, startY, selections)
 
             finalListSelections = selections
+            spriteSplitter.finalListSelections = finalListSelections
             return selections
         }
 
@@ -128,7 +147,7 @@
             if(selection){
                 selections.push(selection)
 
-                //debugSelection(selection)
+                debugSelection(selection)
 
                 let nextPixel = findNextPixel()
 
