@@ -7,6 +7,7 @@
             imageObj = undefined
             refPixel = undefined
             window.spriteSplitter.selectedSelections = []
+            window.spriteSplitter.finalListSelections = []
             window.spriteSplitter.imageObj = undefined
             finalListSelections = []
         }
@@ -17,7 +18,10 @@
             isPixelInSelections : isPixelInSelections,
             loadFileInCanvas : loadFileInCanvas,
             onCanvasClick:onCanvasClick,
+            selectFrameAndOverlayIt: selectFrameAndOverlayIt,
+            selectFrameAt: selectFrameAt,
             selectedSelections: [],
+            finalListSelections: [],
             imageObj: undefined
         }
 
@@ -27,10 +31,7 @@
             let canvas = conf.canvas
             let startX = conf.startX
             loadFileInCanvas(fileUrl, canvas, function (imageObj, context) {
-                spriteSplitter.imageObj = imageObj
-                var w = imageObj.width, h = imageObj.height;
-                imageData = context.getImageData(0, 0, w, h).data
-                refPixel = getPixel(conf.startX, conf.startY)
+
                 if(onSelectionsFound){
                     onSelectionsFound(findFramesFrom(0, 0))
                 }
@@ -49,6 +50,12 @@
                 canvas.width = imageObj.width
                 canvas.height = imageObj.height
                 context.drawImage(this, 0, 0)
+
+                spriteSplitter.imageObj = imageObj
+                var w = imageObj.width, h = imageObj.height;
+                imageData = context.getImageData(0, 0, w, h).data
+                refPixel = getPixel(0, 0)
+
                 callback(imageObj, context)
             };
 
@@ -79,13 +86,10 @@
 
 
         function isEmptyPixel(targetPixel){
-            //return targetPixel.alpha === 0
-            //*
              return targetPixel.red === refPixel.red
              && targetPixel.blue === refPixel.blue
              && targetPixel.green === refPixel.green
              &&   targetPixel.alpha === refPixel.alpha
-             //*/
         }
 
         function debugSelection(selection){
@@ -134,8 +138,28 @@
             return selections
         }
 
-        function selectFrameAndNext(startX, startY, selections){
+        function selectFrameAt(startX, startY){
+            if(spriteSplitter.finalListSelections === undefined){
+                spriteSplitter.finalListSelections = []
+            }
 
+            let firstPixel = findNextStartPixel(startX, startY, spriteSplitter.finalListSelections)
+
+            if(isFinalPixel(firstPixel)){
+                return;
+            }
+
+            let selection = selectFrame(firstPixel)
+
+            if(selection) {
+                spriteSplitter.finalListSelections.push(selection)
+            }
+
+            return spriteSplitter.finalListSelections;
+
+        }
+
+        function selectFrameAndNext(startX, startY, selections){
 
             let firstPixel = findNextStartPixel(startX, startY, selections)
 
@@ -390,6 +414,14 @@
             return offset
         }
 
+        function selectFrameAndOverlayIt(e){
+            let mousePos = getMousePos(e)
+            let selections = selectFrameAt(mousePos.x, mousePos.y)
+
+            selections.forEach(function(selection){
+                putOverlay(selection)
+            })
+        }
         function onCanvasClick(e){
             let selections = findSelectionOfPixel(finalListSelections, getMousePos(e))
 

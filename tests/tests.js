@@ -149,6 +149,23 @@ QUnit.module("module", function (obj) {
         })
     })
 
+    QUnit.test("Select one frame at X Y", function (assert) {
+        var done = assert.async()
+        spriteSplitter.loadFileInCanvas('./test1.png', canvas, function(){
+            spriteSplitter.finalListSelections = []
+            let selections = spriteSplitter.selectFrameAt(0, 0)
+            assert.deepEqual(selections,[
+                {
+                    "height": 56,
+                    "width": 40,
+                    "x": 4,
+                    "y": 4
+                }
+            ])
+            done()
+        })
+    })
+
 
 
 });

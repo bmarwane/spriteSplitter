@@ -39,16 +39,24 @@ angular.module('app')
                 scope.$watch('ngModel', function(value){
                     if(!value) return;
 
-                    console.log(value)
-
+                    /*
+                    Cut all the frames an then select frames on click
                     spriteSplitter.selectImages({
                         fileUrl:value,
                         canvas:element[0],
                         startX:0,
                         startY:0
                     }, function(selections){})
+                     element[0].addEventListener('click', spriteSplitter.onCanvasClick, false)
+                    //*/
 
-                    element[0].addEventListener('click', spriteSplitter.onCanvasClick, false)
+                    // Cut a frame on click, 
+                    spriteSplitter.loadFileInCanvas(value, element[0], function(){
+                        element[0].addEventListener('click', spriteSplitter.selectFrameAndOverlayIt, false)
+                    })
+
+
+
                 })
             }
         }
