@@ -22,6 +22,10 @@ angular.module('app')
                 angular.element(element).val(null)
             })
         }
+        
+        $scope.resetSelections = () => {
+            spriteSplitter.resetSelections()
+        }
 
         function onFramesSaved(){
             alert('Frames Saved on disc')
@@ -73,8 +77,6 @@ angular.module('app')
 
                     canvas.width = selection.width
                     canvas.height = selection.height
-
-                    console.log(spriteSplitter.imageObj)
 
                     context.drawImage(spriteSplitter.imageObj, selection.x, selection.y, selection.width, selection.height, 0, 0, selection.width, selection.height)
 

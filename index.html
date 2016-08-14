@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Photon</title>
+    <title>Sprites splitter</title>
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="vendor/photon-0.1.2-alpha/dist/css/photon.min.css">
@@ -18,31 +18,45 @@
         <div class="toolbar-actions">
             <div class="btn-group">
 
-                <button class="btn btn-default" file-trigger="spriteLoad">
+                <button class="btn btn-default tooltip" file-trigger="spriteLoad">
                     <span class="icon icon-picture"></span>
+                    <span class="tooltiptext">Load sprite sheet</span>
                 </button>
 
-                <button class="btn btn-default" file-trigger="saveFrames" ng-show="mainImagePath">
+                <button class="btn btn-default tooltip" file-trigger="saveFrames" ng-show="mainImagePath">
                     <span class="icon icon-floppy"></span>
+                    <span class="tooltiptext">Save selected frames</span>
+
                 </button>
 
-                <input ng-model="mainImagePath"
-                       style="display:none"
-                       file-input="spriteLoad"
-                       type="file"
-                       file-change-callback="onSelectMainImage"/>
+                <button class="btn btn-default tooltip" ng-click="resetSelections()" ng-show="mainImagePath">
+                    <span class="icon icon-arrows-ccw"></span>
+                    <span class="tooltiptext">Clear selections</span>
 
-                <input ng-model="targetFolder"
-                       style="display:none"
-                       file-input="saveFrames"
-                       type="file"
-                       webkitdirectory directory
-                       file-change-callback="onFolderSelected"/>
+                </button>
+
+
             </div>
 
+            <span class="infoPixel">
+                The pixel at the top left corner will be the reference to detect empty areas
+
+            </span>
         </div>
     </header>
 
+    <input ng-model="mainImagePath"
+           style="display:none"
+           file-input="spriteLoad"
+           type="file"
+           file-change-callback="onSelectMainImage"/>
+
+    <input ng-model="targetFolder"
+           style="display:none"
+           file-input="saveFrames"
+           type="file"
+           webkitdirectory directory
+           file-change-callback="onFolderSelected"/>
     <!-- Your app's content goes inside .window-content -->
     <div class="window-content">
         <div class="pane-group">

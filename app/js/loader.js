@@ -5,13 +5,14 @@
             canvas = undefined
             context = undefined
             imageObj = undefined
+            rawImageData = undefined
             refPixel = undefined
             window.spriteSplitter.selectedSelections = []
             window.spriteSplitter.finalListSelections = []
             window.spriteSplitter.imageObj = undefined
             finalListSelections = []
         }
-        var imageData, canvas, context, imageObj, refPixel, finalListSelections = []
+        var imageData, canvas, context, imageObj, refPixel, finalListSelections = [], rawImageData
 
         window.spriteSplitter = {
             selectImages : selectImages,
@@ -20,9 +21,16 @@
             onCanvasClick:onCanvasClick,
             selectFrameAndOverlayIt: selectFrameAndOverlayIt,
             selectFrameAt: selectFrameAt,
+            resetSelections: resetSelections,
             selectedSelections: [],
             finalListSelections: [],
             imageObj: undefined
+        }
+
+        function resetSelections(){
+            window.spriteSplitter.selectedSelections = []
+            window.spriteSplitter.finalListSelections = []
+            context.putImageData(rawImageData,0,0);
         }
 
         function selectImages(conf, onSelectionsFound){
@@ -53,7 +61,8 @@
 
                 spriteSplitter.imageObj = imageObj
                 var w = imageObj.width, h = imageObj.height;
-                imageData = context.getImageData(0, 0, w, h).data
+                rawImageData = context.getImageData(0, 0, w, h)
+                imageData = rawImageData.data
                 refPixel = getPixel(0, 0)
 
                 callback(imageObj, context)
@@ -92,19 +101,7 @@
              &&   targetPixel.alpha === refPixel.alpha
         }
 
-        function debugSelection(selection){
-            context.beginPath()
-            context.lineWidth='1'
-            context.strokeStyle='red'
-            context.rect(selection.x, selection.y, selection.width, selection.height)
-
-            context.stroke()
-
-            //putOverlay(selection)
-        }
-
         function isPixelInSelections(selections, pixel){
-
             return findSelectionOfPixel(selections, pixel).length > 0
         }
 
@@ -170,8 +167,6 @@
             let selection = selectFrame(firstPixel)
             if(selection){
                 selections.push(selection)
-
-                //debugSelection(selection)
 
                 let nextPixel = findNextPixel()
 
@@ -258,13 +253,12 @@
         function expandFromPixel(selection){
 
 
-            let isFinished = false, count = 0
+            let isFinished = false
 
             while(!isFinished){
-                count+= 1
                 let offset = expandFromAllDirections(selection)
 
-                if(offset === 0 || count === 3){
+                if(offset === 0){
                     isFinished = true
                 }
             }
@@ -273,6 +267,8 @@
         function isLineEmptyToTheRight(selection){
             let xToCheck = selection.x + selection.width
             let yToCheck = selection.y
+
+            if(xToCheck > imageObj.width) return true
 
 
             for(let y = yToCheck, max = (yToCheck + selection.height); y < max; y++){
@@ -288,6 +284,9 @@
             let xToCheck = selection.x - 1
             let yToCheck = selection.y
 
+            if(xToCheck < 0) return true
+
+
             for(let y = yToCheck, max =  (yToCheck + selection.height); y < max; y++){
                 if(!isEmptyPixel(getPixel(xToCheck, y))){
                     return false
@@ -302,6 +301,9 @@
             let xToCheck = selection.x
             let yToCheck = selection.y + selection.height
 
+            if(yToCheck > imageObj.height) return true
+
+
             for(let x = xToCheck, max =  ( xToCheck + selection.width); x < max; x++){
                 if(!isEmptyPixel(getPixel(x, yToCheck))){
                     return false
@@ -314,6 +316,9 @@
         function isLineEmptyToTheTop(selection){
             let xToCheck = selection.x
             let yToCheck = selection.y - 1
+
+            if(yToCheck < 0) return true
+
 
             for(let x = xToCheck, max =  ( xToCheck + selection.width); x < max; x++){
                 if(!isEmptyPixel(getPixel(x, yToCheck))){
