@@ -30,6 +30,17 @@ Create a binary
 
 Refer to [Electron packager](https://github.com/electron-userland/electron-packager) to create a binary
 
+Download Binary
+---------------
+
+Here are a some precompiled binaries : 
+
+Mac : http://apprendre-le-js.com/wp-content/uploads/2016/08/sprite-splitter-darwin-x64.zip
+
+Windows : http://apprendre-le-js.com/wp-content/uploads/2016/08/sprite-splitter-win32-x64.zip
+
+Linux : http://apprendre-le-js.com/wp-content/uploads/2016/08/sprite-splitter-linux-x64.zip
+
 
 How to use ?
 ------------
