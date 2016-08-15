@@ -1,6 +1,6 @@
 {
-  "name": "map-scrap",
-  "version": "1.0.0",
+  "name": "sprite-splitter",
+  "version": "0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "test": "electron test.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "electron-prebuilt": "^1.1.0"
   },
