@@ -41,11 +41,11 @@ Load a sprite using the top left button as indicated in the image below :
 
 ![](/Screenshots/load_sprite.png?raw=true)
 
-click on the frame that you want 
+**click on the frames that you want** 
 
 ![](/Screenshots/choose_frame.png?raw=true)
 
-Save on disk !
+**Save on disk !**
 
 ![](/Screenshots/save_frames.png?raw=true)
 
