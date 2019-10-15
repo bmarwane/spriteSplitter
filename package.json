@@ -1,15 +1,17 @@
 {
   "name": "sprite-splitter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "electron index.js",
-    "test": "electron test.js"
+    "test": "electron test.js",
+    "build-linux": "electron-packager . sprite-splitter-linux --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=release-builds"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "electron-packager": "^14.0.6",
     "electron-prebuilt": "1.4.13"
   },
   "dependencies": {
