@@ -26,13 +26,16 @@
                 <button class="btn btn-default tooltip" file-trigger="saveFrames" ng-show="mainImagePath">
                     <span class="icon icon-floppy"></span>
                     <span class="tooltiptext">Save selected frames</span>
-
                 </button>
 
                 <button class="btn btn-default tooltip" ng-click="resetSelections()" ng-show="mainImagePath">
                     <span class="icon icon-arrows-ccw"></span>
                     <span class="tooltiptext">Clear selections</span>
+                </button>
 
+                <button class="btn btn-default tooltip" ng-click="toggleDarkTheme()">
+                    <span class="icon icon-palette"></span>
+                    <span class="tooltiptext">Clear selections</span>
                 </button>
 
 
@@ -61,7 +64,7 @@
     <div class="window-content">
         <div class="pane-group">
 
-            <div class="pane">
+            <div class="pane" ng-class="{'pane-dark': isDarkTheme()}">
                 <canvas id="canvas"
                         style="display:block; margin:auto"
                         source-sprite

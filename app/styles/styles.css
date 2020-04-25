@@ -39,3 +39,8 @@
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+
+/* Dark Theme */
+.pane-dark {
+    background-color: #171612;
+}
