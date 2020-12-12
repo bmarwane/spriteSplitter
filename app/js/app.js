@@ -22,9 +22,17 @@ angular.module('app')
                 angular.element(element).val(null)
             })
         }
-        
+
         $scope.resetSelections = () => {
             spriteSplitter.resetSelections()
+        }
+
+        let dark_theme = false;
+        $scope.toggleDarkTheme = () => {
+            dark_theme = !dark_theme
+        }
+        $scope.isDarkTheme = () => {
+            return dark_theme
         }
 
         function onFramesSaved(){
@@ -54,7 +62,7 @@ angular.module('app')
                      element[0].addEventListener('click', spriteSplitter.onCanvasClick, false)
                     //*/
 
-                    // Cut a frame on click, 
+                    // Cut a frame on click,
                     spriteSplitter.loadFileInCanvas(value, element[0], function(){
                         element[0].addEventListener('click', spriteSplitter.selectFrameAndOverlayIt, false)
                     })
