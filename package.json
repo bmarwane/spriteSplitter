@@ -1,12 +1,14 @@
 {
   "name": "sprite-splitter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "electron index.js",
     "test": "electron test.js",
-    "build-linux": "electron-packager . sprite-splitter-linux --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=release-builds"
+    "build-windows": "electron-packager . sprite-splitter-1.0.2 --overwrite --asar=true --platform=win32 --arch=x64 --prune=true --out=release-builds",
+    "build-mac": "electron-packager . sprite-splitter-1.0.2 --overwrite --asar=true --platform=darwin --arch=x64 --prune=true --out=release-builds",
+    "build-linux": "electron-packager . sprite-splitter-1.0.2 --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=release-builds"
   },
   "author": "",
   "license": "MIT",

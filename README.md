@@ -33,26 +33,26 @@ Refer to [Electron packager](https://github.com/electron-userland/electron-packa
 Download Binary
 ---------------
 
-Here are a some precompiled binaries : 
+Here are a some precompiled binaries :
 
-Mac : http://apprendre-le-js.com/wp-content/uploads/2016/08/sprite-splitter-darwin-x64.zip
+Mac : https://archive.apprendre-le-js.com/wp-content/uploads/sprite-splitter/sprite-splitter-1.0.2-darwin-x64.zip
 
-Windows : http://apprendre-le-js.com/wp-content/uploads/2016/08/sprite-splitter-win32-x64.zip
+Windows : https://archive.apprendre-le-js.com/wp-content/uploads/sprite-splitter/sprite-splitter-1.0.2-win32-x64.zip
 
-Linux : http://apprendre-le-js.com/wp-content/uploads/2016/08/sprite-splitter-linux-x64.zip
+Linux : https://archive.apprendre-le-js.com/wp-content/uploads/sprite-splitter/sprite-splitter-1.0.2-linux-x64.zip
 
 
 How to use ?
 ------------
 
-**load a spritesheet :** 
+**load a spritesheet :**
 
-Load a sprite using the top left button as indicated in the image below : 
+Load a sprite using the top left button as indicated in the image below :
 
 
 ![](/Screenshots/load_sprite.png?raw=true)
 
-**click on the frames that you want** 
+**click on the frames that you want**
 
 ![](/Screenshots/choose_frame.png?raw=true)
 
