@@ -5,6 +5,10 @@ A multi plateform tool to cut a spriteSheet into individual frames.
 
 ----------
 
+Web version
+-----------
+
+i created a web version of this tool, it's hosted here : [sprite-splitter.bmar1.com](https://sprite-splitter.bmar1.com/)
 
 Installation
 -------------
